@@ -38,7 +38,7 @@ function transcode() {
     shift
   fi
 
-  input=$2
+  input=$1
   output=$(sed 's|^s3://|s3a://|' <<< $2)
 
   if [[ -z $input || -z $output ]]; then
