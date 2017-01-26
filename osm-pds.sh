@@ -23,7 +23,7 @@ function mirror() {
 
   >&2 echo "Mirroring ${input} to ${output}..."
 
-  htcat $input | aws s3 cp - $output
+  htcat $input | pv | aws s3 cp - $output
 }
 
 case $command in
