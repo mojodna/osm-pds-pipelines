@@ -31,6 +31,13 @@ function mirror() {
 }
 
 function transcode() {
+  opts=()
+
+  if [[ "$1" == "--changesets" ]]; then
+    opts+=($1)
+    shift
+  fi
+
   set +u
   input=$1
   output=$(sed 's|^s3://|s3a://|' <<< $2)
@@ -43,7 +50,16 @@ function transcode() {
 
   >&2 echo "Transcoding ${input} to ${output}..."
 
-  aws s3 cp $input - | pv | osm2orc - $output
+  decompressor="cat"
+  if [[ "$input" =~ \.bz2$ ]]; then
+    decompressor="bzip2 -dc"
+  elif [[ "$input" =~ \.gz$ ]]; then
+    decompressor="gzip -dc"
+  elif [[ "$input" =~ \.xz$ ]]; then
+    decompressor="xz -dc"
+  fi
+
+  aws s3 cp $input - | $decompressor | pv | osm2orc "${opts[@]}" - $output
 }
 
 case $command in
