@@ -50,7 +50,7 @@ function transcode() {
     >&2 echo "usage: $(basename $0) transcode <input> <output>"
     >&2 echo "Only S3 URIs are supported for transcoding."
     exit 1
-  else
+  fi
 
   >&2 echo "Transcoding ${input} to ${output}..."
 
