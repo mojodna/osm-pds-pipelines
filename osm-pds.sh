@@ -23,7 +23,11 @@ function mirror() {
 
   >&2 echo "Mirroring ${input} to ${output}..."
 
-  htcat $input | pv | aws s3 cp - $output
+  if [[ "$input" =~ s3:// ]]; then
+    aws s3 cp $input $output
+  else
+    htcat $input | pv | aws s3 cp - $output
+  fi
 }
 
 function transcode() {
