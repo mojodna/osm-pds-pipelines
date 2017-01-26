@@ -23,7 +23,7 @@ function mirror() {
 
   >&2 echo "Mirroring ${input} to ${output}..."
 
-  if [[ "$input" =~ s3:// ]]; then
+  if [[ "$input" =~ ^s3:// ]]; then
     aws s3 cp $input $output
   else
     htcat $input | pv | aws s3 cp - $output
@@ -45,6 +45,12 @@ function transcode() {
     >&2 echo "usage: $(basename $0) transcode <input> <output>"
     exit 1
   fi
+
+  if [[ ! ( "$input" =~ ^s3:// && "$output" =~ ^s3:// ) ]]; then
+    >&2 echo "usage: $(basename $0) transcode <input> <output>"
+    >&2 echo "Only S3 URIs are supported for transcoding."
+    exit 1
+  else
 
   >&2 echo "Transcoding ${input} to ${output}..."
 
