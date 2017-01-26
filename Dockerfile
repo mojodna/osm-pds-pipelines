@@ -1,4 +1,4 @@
-FROM openjdk
+FROM openjdk:7-jre
 MAINTAINER Seth Fitzsimmons <seth@mojodna.net>
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -8,6 +8,7 @@ RUN \
   apt update \
   && apt install -y --no-install-recommends \
     pv \
+    python \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* \
   && curl https://bootstrap.pypa.io/get-pip.py | python \
