@@ -39,7 +39,7 @@ function transcode() {
   fi
 
   input=$1
-  output=$(sed 's|^s3://|s3a://|' <<< $2)
+  output=$2
 
   if [[ -z $input || -z $output ]]; then
     >&2 echo "usage: $(basename $0) transcode <input> <output>"
@@ -54,6 +54,7 @@ function transcode() {
 
   >&2 echo "Transcoding ${input} to ${output}..."
 
+  output=$(sed 's|^s3://|s3a://|' <<< $output)
   decompressor="cat"
   if [[ "$input" =~ \.bz2$ ]]; then
     decompressor="bzip2 -dc"
