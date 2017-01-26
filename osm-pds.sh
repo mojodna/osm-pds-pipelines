@@ -23,7 +23,7 @@ function mirror() {
 
   >&2 echo "Mirroring ${input} to ${output}..."
 
-  curl --retry 5 $input | aws s3 cp - $output
+  htcat $input | aws s3 cp - $output
 }
 
 case $command in
