@@ -1,4 +1,4 @@
-FROM openjdk:7-jre
+FROM openjdk:9-jre
 MAINTAINER Seth Fitzsimmons <seth@mojodna.net>
 
 ENV DEBIAN_FRONTEND noninteractive
