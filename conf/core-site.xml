@@ -1,0 +1,10 @@
+<configuration>
+  <property>
+    <name>fs.s3a.fast.upload</name>
+    <value>true</value>
+    <description>Upload directly from memory instead of buffering to
+    disk first. Memory usage and parallelism can be controlled as up to
+    fs.s3a.multipart.size memory is consumed for each (part)upload actively
+    uploading (fs.s3a.threads.max) or queueing (fs.s3a.max.total.tasks)</description>
+  </property>
+</configuration>
