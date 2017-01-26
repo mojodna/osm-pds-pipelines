@@ -46,4 +46,8 @@ case $command in
   mirror)
     mirror $@
     ;;
+
+  transcode)
+    transcode $@
+    ;;
 esac
