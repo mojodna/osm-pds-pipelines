@@ -3,7 +3,7 @@
 command=$1
 shift
 
-set -euo pipefail
+set -eo pipefail
 
 if [ -z $command ]; then
   >&2 echo "usage: $(basename $0) <command> [args]"
@@ -38,10 +38,8 @@ function transcode() {
     shift
   fi
 
-  set +u
-  input=$1
+  input=$2
   output=$(sed 's|^s3://|s3a://|' <<< $2)
-  set -u
 
   if [[ -z $input || -z $output ]]; then
     >&2 echo "usage: $(basename $0) transcode <input> <output>"
