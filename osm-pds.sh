@@ -29,7 +29,7 @@ function mirror() {
 function transcode() {
   set +u
   input=$1
-  output=$2
+  output=$(sed 's|^s3://|s3a://|' <<< $2)
   set -u
 
   if [[ -z $input || -z $output ]]; then
