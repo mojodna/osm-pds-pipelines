@@ -64,7 +64,9 @@ function transcode() {
     decompressor="xz -dc"
   fi
 
+  set +e
   size=$(aws s3 ls $input | head -1 | awk '{print $3}')
+  set -e
   aws s3 cp $input - | pv -s $size | $decompressor | osm2orc "${opts[@]}" - $output
 }
 
