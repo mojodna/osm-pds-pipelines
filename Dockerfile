@@ -18,10 +18,8 @@ RUN \
 WORKDIR /app
 
 RUN \
-  curl -sfL https://github.com/mojodna/osm2orc/releases/download/v0.1.1/osm2orc-0.1.1.tar.gz | tar zxf - --strip-components=1
+  curl -sfL https://github.com/mojodna/osm2orc/releases/download/v0.2.0/osm2orc-0.2.0.tar.gz | tar zxf - --strip-components=1
 
 COPY . /app
-
-ENV JAVA_OPTS "-Xmx6g"
 
 ENTRYPOINT ["/app/osm-pds.sh"]
