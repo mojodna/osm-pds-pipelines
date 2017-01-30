@@ -1,0 +1,6 @@
+<configuration>
+  <property>
+    <name>fs.s3a.fast.upload</name>
+    <value>true</value>
+  </property>
+</configuration>
