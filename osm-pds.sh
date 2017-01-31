@@ -26,7 +26,8 @@ function mirror() {
   if [[ "$input" =~ ^s3:// ]]; then
     aws s3 cp $input $output
   else
-    htcat $input | pv | aws s3 cp - $output
+    # htcat $input | pv | aws s3 cp - $output
+    curl -sf $input | pv | aws s3 cp - $output
   fi
 }
 
