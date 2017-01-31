@@ -27,7 +27,7 @@ function mirror() {
     aws s3 cp $input $output
   else
     # htcat $input | pv | aws s3 cp - $output
-    curl -sf $input | pv | aws s3 cp - $output
+    curl -sfL $input | pv | aws s3 cp - $output
   fi
 }
 
