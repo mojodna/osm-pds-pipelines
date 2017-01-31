@@ -33,7 +33,7 @@ function mirror() {
 function transcode() {
   opts=()
 
-  if [[ "$1" == "--changesets" ]]; then
+  if [[ "$1" =~ "--" ]]; then
     opts+=($1)
     shift
   fi
