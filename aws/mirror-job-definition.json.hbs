@@ -1,0 +1,15 @@
+{
+    "jobDefinitionName": "mirror",
+    "type": "container",
+    "containerProperties": {
+        "image": "quay.io/mojodna/osm-pds-pipelines",
+        "vcpus": 1,
+        "memory": 1000,
+        "command": [
+            "mirror",
+            "Ref::src",
+            "Ref::dst"
+        ],
+        "jobRoleArn": "arn:aws:iam::{{AWS_ACCOUNT_ID}}:role/osmTranscoder"
+    }
+}

@@ -1,0 +1,16 @@
+{
+    "jobDefinitionName": "transcode-history",
+    "type": "container",
+    "containerProperties": {
+        "image": "quay.io/mojodna/osm-pds-pipelines",
+        "vcpus": 1,
+        "memory": 8000,
+        "command": [
+            "transcode",
+            "--history",
+            "Ref::src",
+            "Ref::dst"
+        ],
+        "jobRoleArn": "arn:aws:iam::{{AWS_ACCOUNT_ID}}:role/osmTranscoder"
+    }
+}

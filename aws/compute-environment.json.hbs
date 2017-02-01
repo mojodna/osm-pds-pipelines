@@ -1,0 +1,27 @@
+{
+    "computeEnvironmentName": "osm",
+    "type": "MANAGED",
+    "computeResources": {
+        "type": "SPOT",
+        "minvCpus": 0,
+        "maxvCpus": 10,
+        "instanceTypes": [
+            "optimal"
+        ],
+        "subnets": [
+            "subnet-c40c258d",
+            "subnet-35890d09",
+            "subnet-f9c0b6a2",
+            "subnet-5de89070"
+        ],
+        "securityGroupIds": [
+            "sg-a8812dd4",
+            "sg-b87facc4"
+        ],
+        "ec2KeyPair": "osmpds-mojodna-us-east-1",
+        "instanceRole": "arn:aws:iam::{{AWS_ACCOUNT_ID}}:instance-profile/ecsInstanceRole",
+        "bidPercentage": 40,
+        "spotIamFleetRole": "arn:aws:iam::{{AWS_ACCOUNT_ID}}:role/AmazonEC2SpotFleetRole"
+    },
+    "serviceRole": "arn:aws:iam::{{AWS_ACCOUNT_ID}}:role/service-role/AWSBatchServiceRole"
+}

@@ -1,0 +1,16 @@
+{
+    "jobDefinitionName": "transcode-changesets",
+    "type": "container",
+    "containerProperties": {
+        "image": "quay.io/mojodna/osm-pds-pipelines",
+        "vcpus": 1,
+        "memory": 2000,
+        "command": [
+            "transcode",
+            "--changesets",
+            "Ref::src",
+            "Ref::dst"
+        ],
+        "jobRoleArn": "arn:aws:iam::{{AWS_ACCOUNT_ID}}:role/osmTranscoder"
+    }
+}
