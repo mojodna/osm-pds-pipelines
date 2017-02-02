@@ -172,8 +172,6 @@ exports.handle = (event, context, callback) => {
     return async.forEachLimit(toMirror, 10, (info, done) => {
       if (path.extname(info.filename) !== '.md5' &&
           localFiles.indexOf(info.filename + '.md5') < 0) {
-        console.log(info)
-
         return request.get(`${HTTP_SOURCE_PREFIX}${info.path}.md5`, (err, rsp, body) => {
           if (err) {
             return done(err)
