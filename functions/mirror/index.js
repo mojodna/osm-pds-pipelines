@@ -90,8 +90,14 @@ exports.handle = (event, context, callback) => {
         const _stdout = []
         const _stderr = []
 
-        const rsync = new Rsync().set('list-only')
+        const rsync = new Rsync()
+          .set('list-only')
           .source(`${RSYNC_SOURCE_PREFIX}${path}`)
+
+        const env = process.env
+        env.PATH += ':/var/task/bin'
+
+        rsync.env(env)
 
         return rsync.execute((err, code, cmd) => {
           const stdout = Buffer.concat(_stdout).toString()
