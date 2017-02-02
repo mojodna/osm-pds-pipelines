@@ -3,7 +3,7 @@
   "description": "OSM Public Datasets",
   "memory": 128,
   "timeout": 30,
-  "role": "<redacted>",
+  "role": "arn:aws:iam::{{AWS_ACCOUNT_ID}}:role/osm-pds_lambda_function",
   "environment": {
     "BATCH_JOB_QUEUE": "osm-transcoding",
     "S3_BUCKET": "osm-pds"
