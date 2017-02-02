@@ -87,17 +87,23 @@ exports.handle = (event, context, callback) => {
   return async.parallel({
     remote: done => {
       return async.map(PATHS_TO_CHECK, (path, fin) => {
-        const chunks = []
+        const _stdout = []
+        const _stderr = []
 
         const rsync = new Rsync().set('list-only')
           .source(`${RSYNC_SOURCE_PREFIX}${path}`)
 
         return rsync.execute((err, code, cmd) => {
+          const stdout = Buffer.concat(_stdout).toString()
+          const stderr = Buffer.concat(_stderr).toString()
+
           if (err) {
+            console.warn('stdout:\n', stdout)
+            console.warn('stderr:\n', stderr)
+
             return fin(err)
           }
 
-          const stdout = Buffer.concat(chunks).toString()
           const entries = stdout.split('\n')
             .filter(line => !!line)
             .map(line => {
@@ -114,7 +120,9 @@ exports.handle = (event, context, callback) => {
 
           return fin(null, entries)
         }, chunk => {
-          chunks.push(chunk)
+          _stdout.push(chunk)
+        }, chunk => {
+          _stderr.push(chunk)
         })
       }, (err, data) => {
         return done(err, flatten(data))
