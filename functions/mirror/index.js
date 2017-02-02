@@ -186,6 +186,11 @@ exports.handle = (event, context, callback) => {
             submitJob: done => {
               const basename = info.filename.replace(/\..+/, '')
               const type = basename.replace(/-.+/, '')
+              let target = type
+
+              if (type === 'history') {
+                target = 'planet-history'
+              }
 
               return async.waterfall([
                 async.apply(
@@ -205,7 +210,7 @@ exports.handle = (event, context, callback) => {
                 async.apply(
                   mirror,
                   `s3://${S3_BUCKET}/${year}/${basename}.orc`,
-                  `s3://${S3_BUCKET}/${type}/${type}-latest.orc`,
+                  `s3://${S3_BUCKET}/${target}/${type}-latest.orc`,
                   `place-${basename}`
                 )
               ], done)
