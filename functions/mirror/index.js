@@ -205,7 +205,7 @@ exports.handle = (event, context, callback) => {
                 async.apply(
                   mirror,
                   `s3://${S3_BUCKET}/${year}/${basename}.orc`,
-                  `s3://${S3_BUCKET}/changesets/${type}-latest.orc`,
+                  `s3://${S3_BUCKET}/${type}/${type}-latest.orc`,
                   `place-${basename}`
                 )
               ], done)
