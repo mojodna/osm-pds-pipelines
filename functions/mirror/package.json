@@ -1,0 +1,19 @@
+{
+  "name": "mirror",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Seth Fitzsimmons <seth@mojodna.net>",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.9.0",
+    "request": "^2.79.0",
+    "require-env": "0.0.4",
+    "rsync": "^0.6.1"
+  },
+  "devDependencies": {
+    "standard": "^8.6.0"
+  }
+}

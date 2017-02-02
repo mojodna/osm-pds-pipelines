@@ -1,0 +1,11 @@
+{
+  "name": "osm-pds",
+  "description": "OSM Public Datasets",
+  "memory": 128,
+  "timeout": 30,
+  "role": "<redacted>",
+  "environment": {
+    "BATCH_JOB_QUEUE": "osm-transcoding",
+    "S3_BUCKET": "osm-pds"
+  }
+}
