@@ -1,1 +1,8 @@
+*.env
+.envrc
 .git
+aws
+functions
+Makefile
+node_modules
+*.json*
