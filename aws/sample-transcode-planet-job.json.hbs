@@ -1,9 +1,9 @@
 {
-    "jobName": "transcode-planet-170123",
+    "jobName": "transcode-planet-170213",
     "jobQueue": "arn:aws:batch:us-east-1:{{AWS_ACCOUNT_ID}}:job-queue/osm-transcoding",
     "jobDefinition": "arn:aws:batch:us-east-1:{{AWS_ACCOUNT_ID}}:job-definition/transcode-planet",
     "parameters": {
-        "src": "s3://osm-pds/2017/planet-170123.osm.pbf",
-        "dst": "s3://osm-pds/2017/planet-170123.orc"
+        "src": "s3://osm-pds/2017/planet-170213.osm.pbf",
+        "dst": "s3://osm-pds/2017/planet-170213.orc"
     }
 }
