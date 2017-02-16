@@ -1,7 +1,7 @@
 {
     "jobName": "transcode-changesets-170123",
     "jobQueue": "arn:aws:batch:us-east-1:{{AWS_ACCOUNT_ID}}:job-queue/osm-transcoding",
-    "jobDefinition": "arn:aws:batch:us-east-1:{{AWS_ACCOUNT_ID}}:job-definition/transcode-changesets:4",
+    "jobDefinition": "arn:aws:batch:us-east-1:{{AWS_ACCOUNT_ID}}:job-definition/transcode-changesets",
     "parameters": {
         "src": "s3://osm-pds/2017/changesets-170123.osm.bz2",
         "dst": "s3://osm-pds/2017/changesets-170123.orc"
