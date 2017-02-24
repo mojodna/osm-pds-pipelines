@@ -55,6 +55,7 @@ function transcode() {
 
   >&2 echo "Transcoding ${input} to ${output}..."
 
+  http_input=$(sed 's|s3://\([^/]*\)/|http://\1.s3.amazonaws.com/|' <<< $input)
   output=$(sed 's|^s3://|s3a://|' <<< $output)
   decompressor="cat"
   if [[ "$input" =~ \.bz2$ ]]; then
@@ -68,7 +69,7 @@ function transcode() {
   set +e
   size=$(aws s3 ls $input 2> /dev/null | head -1 | awk '{print $3}')
   set -e
-  aws s3 cp $input - | pv -s $size | $decompressor | osm2orc "${opts[@]}" - $output
+  curl -sf $http_input | pv -s $size | $decompressor | osm2orc "${opts[@]}" - $output
 }
 
 case $command in
