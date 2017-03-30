@@ -1,6 +1,9 @@
 {
     "jobDefinitionName": "mirror",
     "type": "container",
+    "retryStrategy": {
+        "attempts": 5
+    },
     "containerProperties": {
         "image": "quay.io/mojodna/osm-pds-pipelines",
         "vcpus": 1,

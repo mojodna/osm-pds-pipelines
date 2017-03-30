@@ -1,10 +1,13 @@
 {
     "jobDefinitionName": "transcode-changesets",
     "type": "container",
+    "retryStrategy": {
+        "attempts": 2
+    },
     "containerProperties": {
         "image": "quay.io/mojodna/osm-pds-pipelines",
         "vcpus": 1,
-        "memory": 2000,
+        "memory": 3000,
         "command": [
             "transcode",
             "--changesets",

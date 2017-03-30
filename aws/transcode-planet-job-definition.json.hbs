@@ -1,6 +1,9 @@
 {
     "jobDefinitionName": "transcode-planet",
     "type": "container",
+    "retryStrategy": {
+        "attempts": 2
+    },
     "containerProperties": {
         "image": "quay.io/mojodna/osm-pds-pipelines",
         "vcpus": 1,
