@@ -1,0 +1,8 @@
+{
+  "description": "Publish OSM changesets into Kinesis as XML",
+  "runtime": "nodejs6.10",
+  "environment": {
+    "S3_BUCKET": "osm-pds-status",
+    "S3_CHECKPOINT_KEY": "changesets_sequence.txt"
+  }
+}

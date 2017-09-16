@@ -1,0 +1,14 @@
+{
+  "name": "changes-xml",
+  "version": "1.0.0",
+  "description": "",
+  "author": "Seth Fitzsimmons <seth@mojodna.net>",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^2.5.0",
+    "aws-sdk": "^2.117.0",
+    "babel-polyfill": "^6.26.0",
+    "osm-replication-streams": "^0.1.1",
+    "require-env": "^0.2.1"
+  }
+}
