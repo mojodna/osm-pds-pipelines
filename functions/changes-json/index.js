@@ -3,23 +3,26 @@ require("babel-polyfill");
 const {
   BinarySplitter,
   sinks: { Kinesis },
-  sources: { Changesets }
+  sources: { Changes }
 } = require("osm-replication-streams");
+const osm2obj = require('osm2obj');
+const stringify = require("stringify-stream");
 
 let checkpointStream = require('./lib/checkpoint-stream');
 
 exports.handle = (event, context, callback) =>
-  checkpointStream(Changesets, (err, stream) => {
+  checkpointStream(Changes, (err, stream) => {
     if (err) {
       console.warn(err.stack);
       return callback(err);
     }
-    // TODO on error, rewind since the record wouldn't have been written to
-    // Kinesis
+
     stream
-      .pipe(new BinarySplitter("\u001e"))
-      .pipe(new Kinesis("changesets-xml"));
+      .pipe(osm2obj())
+      .pipe(stringify())
+      .pipe(new Kinesis("changes-json"));
   });
+
 
 if (require.main === module) {
   exports.handle({}, {}, (err, body) => {

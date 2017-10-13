@@ -8,7 +8,10 @@ input := $(shell mktemp -u)
 default:
 	docker build -t quay.io/mojodna/osm-pds-pipelines .
 
-deploy: project.json
+deploy: project.json node_modules/.bin/interp
+	for f in functions/* ; do \
+		interp < $$f/function.json.hbs > $$f/function.json; \
+	done
 	apex deploy
 
 install: project.json

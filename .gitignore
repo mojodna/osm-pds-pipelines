@@ -1,2 +1,4 @@
 .env
 project.json
+node_modules
+functions/**/function.json

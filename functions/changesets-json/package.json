@@ -1,5 +1,5 @@
 {
-  "name": "changesets-xml",
+  "name": "changesets-json",
   "version": "1.0.0",
   "description": "",
   "author": "Seth Fitzsimmons <seth@mojodna.net>",
@@ -9,6 +9,8 @@
     "aws-sdk": "^2.117.0",
     "babel-polyfill": "^6.26.0",
     "osm-replication-streams": "^0.1.1",
-    "require-env": "^0.2.1"
+    "osm2obj": "^2.2.2",
+    "require-env": "^0.2.1",
+    "stringify-stream": "^1.0.5"
   }
 }
