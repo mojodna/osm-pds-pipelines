@@ -8,11 +8,24 @@ input := $(shell mktemp -u)
 default:
 	docker build -t quay.io/mojodna/osm-pds-pipelines .
 
-deploy: project.json node_modules/.bin/interp
-	for f in functions/* ; do \
-		interp < $$f/function.json.hbs > $$f/function.json; \
-	done
-	apex deploy
+.PHONY: functions/%/function.json
+functions/%/function.json: functions/%/function.json.hbs
+	interp < $< > $@
+
+deploy-changes-json: project.json functions/changes-json/function.json
+	apex deploy changes-json
+
+deploy-changes-xml: project.json functions/changes-xml/function.json
+	apex deploy changes-xml
+
+deploy-changesets-json: project.json functions/changesets-json/function.json
+	apex deploy changesets-json
+
+deploy-changesets-xml: project.json functions/changesets-xml/function.json
+	apex deploy changesets-xml
+
+deploy-mirror: project.json functions/mirror/function.json
+	apex deploy mirror
 
 install: project.json
 
