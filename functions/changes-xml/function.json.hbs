@@ -2,7 +2,7 @@
   "description": "Publish OSM changes into Kinesis as XML",
   "runtime": "nodejs6.10",
   "environment": {
-    "S3_BUCKET": "${S3_CHECKPOINT_BUCKET}",
+    "S3_BUCKET": "{{S3_CHECKPOINT_BUCKET}}",
     "S3_CHECKPOINT_KEY": "changes_sequence.txt"
   }
 }

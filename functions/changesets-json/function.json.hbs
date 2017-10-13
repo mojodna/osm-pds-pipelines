@@ -1,0 +1,8 @@
+{
+  "description": "Publish OSM changesets into Kinesis as JSON",
+  "runtime": "nodejs6.10",
+  "environment": {
+    "S3_BUCKET": "{{S3_CHECKPOINT_BUCKET}}",
+    "S3_CHECKPOINT_KEY": "changesets_sequence_json.txt"
+  }
+}
