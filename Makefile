@@ -10,7 +10,6 @@ default:
 
 deploy: project.json node_modules/.bin/interp
 	for f in functions/* ; do \
-		cd $$f && npm install; cd -; \
 		interp < $$f/function.json.hbs > $$f/function.json; \
 	done
 	apex deploy

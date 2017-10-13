@@ -10,7 +10,7 @@ const stringify = require("stringify-stream");
 
 let checkpointStream = require('./lib/checkpoint-stream');
 
-exports.handle = (event, context, callback) => {
+exports.handle = (event, context, callback) =>
   checkpointStream(Changes, (err, stream) => {
     if (err) {
       console.warn(err.stack);
@@ -22,7 +22,7 @@ exports.handle = (event, context, callback) => {
       .pipe(stringify())
       .pipe(new Kinesis("changes-json"));
   });
-}
+
 
 if (require.main === module) {
   exports.handle({}, {}, (err, body) => {

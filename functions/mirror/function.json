@@ -1,6 +1,9 @@
 {
   "description": "Mirror OSM planet dumps to S3",
   "runtime": "nodejs4.3",
+  "hooks": { 
+    "build": "npm install" 
+  },
   "environment": {
     "BATCH_JOB_QUEUE": "osm-transcoding",
     "S3_BUCKET": "osm-pds"

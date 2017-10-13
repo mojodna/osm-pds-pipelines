@@ -8,7 +8,7 @@ const {
 
 let checkpointStream = require('./lib/checkpoint-stream');
 
-exports.handle = (event, context, callback) => {
+exports.handle = (event, context, callback) =>
   checkpointStream(Changesets, (err, stream) => {
     if (err) {
       console.warn(err.stack);
@@ -20,7 +20,6 @@ exports.handle = (event, context, callback) => {
       .pipe(new BinarySplitter("\u001e"))
       .pipe(new Kinesis("changesets-xml"));
   });
-}
 
 if (require.main === module) {
   exports.handle({}, {}, (err, body) => {
