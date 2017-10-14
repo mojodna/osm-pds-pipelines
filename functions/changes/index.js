@@ -1,5 +1,6 @@
 require("babel-polyfill");
 
+const env = require("require-env");
 const {
   BinarySplitter,
   sinks: { Kinesis },
@@ -8,7 +9,9 @@ const {
 const osm2obj = require('osm2obj');
 const stringify = require("stringify-stream");
 
-let checkpointStream = require('./lib/checkpoint-stream');
+const checkpointStream = require('./lib/checkpoint-stream');
+
+const STREAM_NAME = env.require("STREAM_NAME");
 
 exports.handle = (event, context, callback) =>
   checkpointStream(Changes, (err, stream) => {
@@ -20,9 +23,8 @@ exports.handle = (event, context, callback) =>
     stream
       .pipe(osm2obj())
       .pipe(stringify())
-      .pipe(new Kinesis("changes-json"));
+      .pipe(new Kinesis(STREAM_NAME));
   });
-
 
 if (require.main === module) {
   exports.handle({}, {}, (err, body) => {

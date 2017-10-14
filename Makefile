@@ -12,11 +12,11 @@ default:
 functions/%/function.json: functions/%/function.json.hbs
 	interp < $< > $@
 
-deploy-changes-json: project.json functions/changes-json/function.json
-	apex deploy changes-json
+deploy-changes: project.json functions/changes/function.json
+	apex deploy changes
 
-deploy-changesets-json: project.json functions/changesets-json/function.json
-	apex deploy changesets-json
+deploy-changesets: project.json functions/changesets/function.json
+	apex deploy changesets
 
 deploy-mirror: project.json functions/mirror/function.json
 	apex deploy mirror
