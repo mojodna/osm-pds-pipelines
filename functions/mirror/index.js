@@ -177,6 +177,18 @@ exports.handle = (event, context, callback) => {
       .filter(info => localFiles.indexOf(info.filename) < 0)
     const year = new Date().getFullYear()
 
+    const latestByType = toMirror.map(x => x.filename)
+      .concat(localFiles)
+      .filter(x => !x.endsWith('.md5'))
+      .reduce((latest, filename) => {
+      // use replace not path.basename w/ path.extname because multiple extensions may be present
+      const [type, date] = filename.replace(/\..+/, '').split(/-/)
+
+      latest[type] = Math.max(latest[type] || 0, date)
+
+      return latest;
+    }, {})
+
     return async.forEachLimit(toMirror, 10, (info, done) => {
       if (path.extname(info.filename) !== '.md5' &&
           localFiles.indexOf(info.filename + '.md5') < 0) {
@@ -192,8 +204,8 @@ exports.handle = (event, context, callback) => {
               Body: body
             }),
             submitJob: done => {
-              const basename = info.filename.replace(/\..+/, '')
-              const type = basename.replace(/-.+/, '')
+              // use replace not path.basename w/ path.extname because multiple extensions may be present
+              const [type, date] = info.filename.replace(/\..+/, '').split(/-/)
               let target = type
 
               if (type === 'history') {
@@ -211,17 +223,28 @@ exports.handle = (event, context, callback) => {
                 async.apply(
                   transcode,
                   type,
-                  `s3://${S3_BUCKET}/${new Date().getFullYear()}/${info.filename}`,
+                  `s3://${S3_BUCKET}/${year}/${info.filename}`,
                   `s3://${S3_BUCKET}/${year}/${basename}.orc`,
                   `transcode-${basename}`
-                ),
-                async.apply(
-                  mirror,
-                  `s3://${S3_BUCKET}/${year}/${basename}.orc`,
-                  `s3://${S3_BUCKET}/${target}/${type}-latest.orc`,
-                  `place-${basename}`
                 )
-              ], done)
+              ], (err, jobId) => {
+                if (err) {
+                  return done(err);
+                }
+
+                // compare date to the max date available to determine whether it needs to be placed
+                if (latestByType[type] === Number(date)) {
+                  return mirror(
+                    `s3://${S3_BUCKET}/${year}/${basename}.orc`,
+                    `s3://${S3_BUCKET}/${target}/${type}-latest.orc`,
+                    `place-${basename}`,
+                    jobId,
+                    done
+                  )
+                }
+
+                return done()
+              })
             }
           }, done)
         })
