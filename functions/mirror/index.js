@@ -18,6 +18,7 @@ const HTTP_SOURCE_PREFIX = 'http://planet.osm.org/'
 
 const PATHS_TO_CHECK = [
   'planet/2017/',
+  'planet/2018/',
   'pbf/',
   'pbf/full-history/'
 ]
@@ -106,6 +107,11 @@ exports.handle = (event, context, callback) => {
           const stderr = Buffer.concat(_stderr).toString()
 
           if (err) {
+            if (code === 23) {
+              // no such path
+              return fin(null, [])
+            }
+
             console.warn('stdout:\n', stdout)
             console.warn('stderr:\n', stderr)
 
