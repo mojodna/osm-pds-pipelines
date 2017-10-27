@@ -29,7 +29,7 @@ const STREAM_NAME = env.require("STREAM_NAME");
  * @returns {Object} A simplified object
  * 
  */
-function obj2simple (obj) {
+const obj2simple = obj => {
   let res = {};
 
   // Omit the action
@@ -40,15 +40,12 @@ function obj2simple (obj) {
   }
 
   if (obj['action']) {
-    if (obj['action'] === 'create' || obj['action'] === 'modify') {
-      res['visible'] = 'true';
-    }
-    else {
-      res['visible'] = 'false';
-    }
+    res.visible = ['create', 'modify'].includes(obj['action']);
   }
   return res;
 }
+
+
 
 exports.handle = (event, context, callback) =>
   checkpointStream(Changes, (err, stream) => {
@@ -59,10 +56,8 @@ exports.handle = (event, context, callback) =>
 
     stream
       .pipe(osm2obj())
-      .pipe(through2.obj(function (obj, enc, cb) {
-        const res = obj2simple(obj);
-        this.push(res);
-        cb();
+      .pipe(through2.obj((obj, enc, cb) => {
+        cb(null, obj2simple(obj));
       }))
       .pipe(stringify())
       .pipe(new Kinesis(STREAM_NAME));
