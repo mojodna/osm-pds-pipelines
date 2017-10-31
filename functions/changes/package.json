@@ -1,5 +1,5 @@
 {
-  "name": "changes-json",
+  "name": "changes",
   "version": "1.0.0",
   "description": "",
   "author": "Seth Fitzsimmons <seth@mojodna.net>",
@@ -11,6 +11,7 @@
     "osm-replication-streams": "^0.1.1",
     "osm2obj": "^2.2.2",
     "require-env": "^0.2.1",
-    "stringify-stream": "^1.0.5"
+    "stringify-stream": "^1.0.5",
+    "through2": "^2.0.3"
   }
 }
