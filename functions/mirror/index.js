@@ -205,7 +205,8 @@ exports.handle = (event, context, callback) => {
             }),
             submitJob: done => {
               // use replace not path.basename w/ path.extname because multiple extensions may be present
-              const [type, date] = info.filename.replace(/\..+/, '').split(/-/)
+              const basename = info.filename.replace(/\..+/, '')
+              const [type, date] = basename.split(/-/)
               let target = type
 
               if (type === 'history') {
