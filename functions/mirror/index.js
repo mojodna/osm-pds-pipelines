@@ -175,7 +175,6 @@ exports.handle = (event, context, callback) => {
       .filter(info => info.filename.match(FILES_TO_MIRROR))
       .filter(info => info.date >= STARTING_DATE)
       .filter(info => localFiles.indexOf(info.filename) < 0)
-    const year = new Date().getFullYear()
 
     const latestByType = toMirror.map(x => x.filename)
       .concat(localFiles)
@@ -190,6 +189,8 @@ exports.handle = (event, context, callback) => {
     }, {})
 
     return async.forEachLimit(toMirror, 10, (info, done) => {
+      const year = info.date.getFullYear()
+
       if (path.extname(info.filename) !== '.md5' &&
           localFiles.indexOf(info.filename + '.md5') < 0) {
         return request.get(`${HTTP_SOURCE_PREFIX}${info.path}.md5`, (err, rsp, body) => {
