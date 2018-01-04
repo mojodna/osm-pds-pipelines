@@ -24,7 +24,7 @@ const PATHS_TO_CHECK = [
 ]
 
 const FILES_TO_MIRROR = /((planet|history)-\d{6}.osm.pbf|changesets-\d{6}.osm.bz2)/
-const STARTING_DATE = new Date('1/22/2017')
+const STARTING_DATE = new Date(Date.now() - (30 * 86400e3))
 
 const flatten = arr => arr.reduce((a, b) => a.concat(Array.isArray(b) ? flatten(b) : b), [])
 
