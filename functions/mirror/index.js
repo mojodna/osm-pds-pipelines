@@ -143,12 +143,8 @@ exports.handle = (event, context, callback) => {
       })
     },
     local: done => {
-      const prefix = `${new Date().getFullYear()}/`
-
       return s3.listObjects({
         Bucket: S3_BUCKET,
-        Delimiter: '/',
-        Prefix: prefix
       }, (err, data) => {
         if (err) {
           return done(err)
@@ -158,7 +154,7 @@ exports.handle = (event, context, callback) => {
           return {
             date: entry.LastModified,
             size: entry.Size,
-            filename: entry.Key.slice(prefix.length)
+            filename: entry.Key
           }
         })
 
@@ -174,7 +170,7 @@ exports.handle = (event, context, callback) => {
     const toMirror = results.remote
       .filter(info => info.filename.match(FILES_TO_MIRROR))
       .filter(info => info.date >= STARTING_DATE)
-      .filter(info => localFiles.indexOf(info.filename) < 0)
+      .filter(info => localFiles.indexOf(`${info.date.getFullYear()}/${info.filename}`) < 0)
 
     const latestByType = toMirror.map(x => x.filename)
       .concat(localFiles)
