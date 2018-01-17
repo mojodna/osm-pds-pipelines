@@ -188,7 +188,7 @@ exports.handle = (event, context, callback) => {
       const year = info.date.getFullYear()
 
       if (path.extname(info.filename) !== '.md5' &&
-          localFiles.indexOf(info.filename + '.md5') < 0) {
+          localFiles.indexOf(`${year}/${info.filename}.md5`) < 0) {
         return request.get(`${HTTP_SOURCE_PREFIX}${info.path}.md5`, (err, rsp, body) => {
           if (err) {
             return done(err)
