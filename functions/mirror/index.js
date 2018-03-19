@@ -14,7 +14,7 @@ const s3 = new AWS.S3()
 const BATCH_JOB_QUEUE = env.require('BATCH_JOB_QUEUE')
 const S3_BUCKET = env.require('S3_BUCKET')
 const RSYNC_SOURCE_PREFIX = 'rsync://planet.osm.org/planet/'
-const HTTP_SOURCE_PREFIX = 'http://planet.osm.org/'
+const HTTP_SOURCE_PREFIX = 'https://planet.osm.org/'
 
 const PATHS_TO_CHECK = [
   'planet/2017/',
