@@ -176,13 +176,15 @@ exports.handle = (event, context, callback) => {
       .concat(localFiles)
       .filter(x => !x.endsWith('.md5'))
       .reduce((latest, filename) => {
-      // use replace not path.basename w/ path.extname because multiple extensions may be present
-      const [type, date] = filename.replace(/\..+/, '').split(/-/)
+        // use replace not path.basename w/ path.extname because multiple extensions may be present
+        const [type, date] = filename.split("/").pop().replace(/\..+/, '').split(/-/)
 
-      latest[type] = Math.max(latest[type] || 0, date)
+        if (!Number.isNaN(parseInt(date))) {
+          latest[type] = Math.max(latest[type] || 0, parseInt(date))
+        }
 
-      return latest;
-    }, {})
+        return latest;
+      }, {})
 
     return async.forEachLimit(toMirror, 10, (info, done) => {
       const year = info.date.getFullYear()
