@@ -1,5 +1,5 @@
 FROM openjdk:8-jre
-MAINTAINER Seth Fitzsimmons <seth@mojodna.net>
+LABEL maintainer="Seth Fitzsimmons <seth@mojodna.net>"
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV PATH /app/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
