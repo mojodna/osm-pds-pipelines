@@ -18,7 +18,7 @@ RUN \
 WORKDIR /app
 
 RUN \
-  curl -sfL https://github.com/mojodna/osm2orc/releases/download/v0.5.2/osm2orc-0.5.2.tar.gz | tar zxf - --strip-components=1
+  curl -sfL https://github.com/mojodna/osm2orc/releases/download/v0.5.3/osm2orc-0.5.3.tar.gz | tar zxf - --strip-components=1
 
 COPY . /app
 
