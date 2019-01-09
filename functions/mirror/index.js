@@ -16,9 +16,11 @@ const S3_BUCKET = env.require('S3_BUCKET')
 const RSYNC_SOURCE_PREFIX = 'rsync://planet.osm.org/planet/'
 const HTTP_SOURCE_PREFIX = 'https://planet.osm.org/'
 
+const now = new Date();
+
 const PATHS_TO_CHECK = [
-  'planet/2017/',
-  'planet/2018/',
+  'planet/' + now.getFullYear() - 1 + '/',
+  'planet/' + now.getFullYear() + '/',
   'pbf/',
   'pbf/full-history/'
 ]
