@@ -16,11 +16,11 @@ const S3_BUCKET = env.require('S3_BUCKET')
 const RSYNC_SOURCE_PREFIX = 'rsync://planet.osm.org/planet/'
 const HTTP_SOURCE_PREFIX = 'https://planet.osm.org/'
 
-const now = new Date();
+const NOW = new Date();
 
 const PATHS_TO_CHECK = [
-  'planet/' + now.getFullYear() - 1 + '/',
-  'planet/' + now.getFullYear() + '/',
+  'planet/' + NOW.getFullYear() - 1 + '/',
+  'planet/' + NOW.getFullYear() + '/',
   'pbf/',
   'pbf/full-history/'
 ]
@@ -172,7 +172,14 @@ exports.handle = (event, context, callback) => {
     const toMirror = results.remote
       .filter(info => info.filename.match(FILES_TO_MIRROR))
       .filter(info => info.date >= STARTING_DATE)
-      .filter(info => localFiles.indexOf(`${info.date.getFullYear()}/${info.filename}`) < 0)
+      .filter(info => {
+        // filenames don't include the century (and the year may not be in the
+        // path, depending on the source)
+        const ts = info.filename.match(/\d{6}/)[0];
+        const year = Math.floor(NOW.getFullYear() / 100) + ts.slice(0, 2)
+
+        return localFiles.indexOf(`${year}/${info.filename}`) < 0
+      })
 
     const latestByType = toMirror.map(x => x.filename)
       .concat(localFiles)
@@ -189,7 +196,10 @@ exports.handle = (event, context, callback) => {
       }, {})
 
     return async.forEachLimit(toMirror, 10, (info, done) => {
-      const year = info.date.getFullYear()
+      // filenames don't include the century (and the year may not be in the
+      // path, depending on the source)
+      const ts = info.filename.match(/\d{6}/)[0];
+      const year = Math.floor(NOW.getFullYear() / 100) + ts.slice(0, 2)
 
       if (path.extname(info.filename) !== '.md5' &&
           localFiles.indexOf(`${year}/${info.filename}.md5`) < 0) {
