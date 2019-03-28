@@ -224,14 +224,25 @@ exports.handle = (event, context, callback) => {
                 target = 'planet-history'
               }
 
+              //AWS Batch Job id for the mirror job, need to save to submit dependent planet-latest.osm.pbf  mirror job
+              let mirrorJobId;
+              
               return async.waterfall([
-                async.apply(
-                  mirror,
-                  `${HTTP_SOURCE_PREFIX}${info.path}`,
-                  `s3://${S3_BUCKET}/${year}/${info.filename}`,
-                  `mirror-${basename}`,
-                  null
-                ),
+                //Function 1 of the waterfall to  mirror osm files
+                (callback) => {
+                    mirror(
+                      `${HTTP_SOURCE_PREFIX}${info.path}`,
+                      `s3://${S3_BUCKET}/${year}/${info.filename}`,
+                      `mirror-${basename}`,
+                      null,
+                      (err,jobId) => { //callback from submitting the job to AWS Batch
+                        if(err) return done(err);
+                        mirrorJobId = jobId;
+                        callback(null,jobId);
+                      }
+                    )
+                },
+                //Function 2 of the water fall to transcode files to .orc
                 async.apply(
                   transcode,
                   type,
@@ -239,20 +250,46 @@ exports.handle = (event, context, callback) => {
                   `s3://${S3_BUCKET}/${year}/${basename}.orc`,
                   `transcode-${basename}`
                 )
-              ], (err, jobId) => {
+              ], (err, transcodeJobId) => {
                 if (err) {
                   return done(err);
                 }
 
                 // compare date to the max date available to determine whether it needs to be placed
                 if (latestByType[type] === Number(date)) {
-                  return mirror(
-                    `s3://${S3_BUCKET}/${year}/${basename}.orc`,
-                    `s3://${S3_BUCKET}/${target}/${type}-latest.orc`,
-                    `place-${basename}`,
-                    jobId,
-                    done
-                  )
+                  return async.parallel([
+                    //Copy the latest planet.pbf file to pbf/planet-latest.osm.pbf 
+                    (callback) => {
+                      if (type === 'planet' && info.filename.endsWith('.pbf')) {
+                        mirror(
+                          `s3://${S3_BUCKET}/${year}/${info.filename}`,
+                          `s3://${S3_BUCKET}/pbf/planet-latest.osm.pbf `,
+                          `place-planet-latest`,
+                          mirrorJobId,
+                          (err,jobId) => { //callback from submitting the job to AWS Batch
+                            if(err) return done(err);
+                            callback();
+                          }
+                        )
+                      } else {
+                        //The file is not the latest planet.pbf file, nothing to do
+                        callback();
+                      }  
+                    },
+                    //Copy the latest orc files
+                    async.apply(
+                      mirror,
+                      `s3://${S3_BUCKET}/${year}/${basename}.orc`,
+                      `s3://${S3_BUCKET}/${target}/${type}-latest.orc`,
+                      `place-${basename}`,
+                      transcodeJobId,
+                    )
+                  ], (err) => {
+                    if (err) {
+                      return done(err);
+                    }
+                    return done();
+                  });
                 }
 
                 return done()

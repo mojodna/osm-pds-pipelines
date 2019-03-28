@@ -25,6 +25,10 @@ function mirror() {
 
   if [[ "$input" =~ ^s3:// ]]; then
     aws s3 cp $input $output
+
+    # Attempt to also copy the related md5 file
+    aws s3 cp $input.md5 $output.md5 || echo "Unable to copy md5"
+
   else
     # htcat $input | pv | aws s3 cp - $output
     curl -sfL $input | pv | aws s3 cp - $output
