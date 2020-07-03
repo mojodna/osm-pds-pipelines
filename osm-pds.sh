@@ -27,7 +27,8 @@ function mirror() {
     aws s3 cp $input $output
   else
     # htcat $input | pv | aws s3 cp - $output
-    curl -sfL $input | pv | aws s3 cp - $output
+    size=$(curl -sLI $input | grep -i content-length | awk '{print $2}')
+    curl -sfL $input | pv | aws s3 cp - $output --expected-size $size
   fi
 }
 
