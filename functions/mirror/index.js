@@ -217,6 +217,7 @@ exports.handle = (event, context, callback) => {
             submitJob: done => {
               // use replace not path.basename w/ path.extname because multiple extensions may be present
               const basename = info.filename.replace(/\..+/, '')
+              const extension = info.filename.split('.').slice(1).join('.');
               const [type, date] = basename.split(/-/)
               let target = type
 
@@ -233,6 +234,19 @@ exports.handle = (event, context, callback) => {
                   null
                 )
               ];
+
+              // compare date to the max date available to determine whether it needs to be placed
+              if ((extension.endsWith('.pbf') || extension.endsWith('.osm.bz2')) && latestByType[type] === Number(date)) {
+                jobs.push(
+                  async.apply(
+                    mirror,
+                    `s3://${S3_BUCKET}/${year}/${info.filename}`,
+                    `s3://${S3_BUCKET}/${type}-latest.${extension}`,
+                    `place-${type}-latest`,
+                    null,
+                  )
+                );
+              }
 
               if (info.filename.endsWith('.pbf')) {
                 // only transcode PBFs
