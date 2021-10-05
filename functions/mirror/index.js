@@ -224,28 +224,36 @@ exports.handle = (event, context, callback) => {
                 target = 'planet-history'
               }
 
-              return async.waterfall([
+              const jobs = [
                 async.apply(
                   mirror,
                   `${HTTP_SOURCE_PREFIX}${info.path}`,
                   `s3://${S3_BUCKET}/${year}/${info.filename}`,
                   `mirror-${basename}`,
                   null
-                ),
-                async.apply(
-                  transcode,
-                  type,
-                  `s3://${S3_BUCKET}/${year}/${info.filename}`,
-                  `s3://${S3_BUCKET}/${year}/${basename}.orc`,
-                  `transcode-${basename}`
                 )
-              ], (err, jobId) => {
+              ];
+
+              if (info.filename.endsWith('.pbf')) {
+                // only transcode PBFs
+                jobs.push(
+                  async.apply(
+                    transcode,
+                    type,
+                    `s3://${S3_BUCKET}/${year}/${info.filename}`,
+                    `s3://${S3_BUCKET}/${year}/${basename}.orc`,
+                    `transcode-${basename}`
+                  )
+                )
+              }
+
+              return async.waterfall(jobs, (err, jobId) => {
                 if (err) {
                   return done(err);
                 }
 
                 // compare date to the max date available to determine whether it needs to be placed
-                if (latestByType[type] === Number(date)) {
+                if (info.filename.endsWith('.pbf') && latestByType[type] === Number(date)) {
                   return mirror(
                     `s3://${S3_BUCKET}/${year}/${basename}.orc`,
                     `s3://${S3_BUCKET}/${target}/${type}-latest.orc`,
