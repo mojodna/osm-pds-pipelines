@@ -5,12 +5,11 @@ transcoding OpenStreetMap data into the AWS OSM Public Dataset.
 
 ## Lambda Function
 
-`functions/mirror` contains a Lambda function intended for deployment using
-[Apex](http://apex.run/). It is intended to be triggered by a CloudWatch Event
-periodically in order to compare the contents of the OSM PDS S3 bucket with what
-`rsync` reports is available on `planet.openstreetmap.org`. MD5 hashes are
-mirrored immediately (and used as indicators as to whether Batch jobs have been
-submitted); larger files are queued for mirroring using AWS Batch.
+`functions/mirror` contains a Lambda function intended for deployment using AWS SAM. It is triggered
+by Amazon EventBridge Scheduler periodically in order to compare the contents of the OSM PDS S3
+bucket with what `rsync` reports is available on `planet.openstreetmap.org`. MD5 hashes are mirrored
+immediately (and used as indicators as to whether Batch jobs have been submitted); larger files are
+queued for mirroring using AWS Batch.
 
 ## Processing
 
@@ -38,10 +37,10 @@ with the AWS command line interface.
 To deploy the Lambda function:
 
 ```bash
-make deploy
+cd functions/mirror
+sam build
+sam deploy
 ```
-
-(Appropriate roles (created by `apex init`) need to exist for this to succeed.)
 
 To build the Docker image locally (for testing):
 

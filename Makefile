@@ -8,24 +8,6 @@ input := $(shell mktemp -u)
 default:
 	docker build --platform linux/amd64 -t quay.io/mojodna/osm-pds-pipelines .
 
-.PHONY: functions/%/function.json
-functions/%/function.json: functions/%/function.json.hbs
-	interp < $< > $@
-
-deploy-changes: project.json functions/changes/function.json
-	apex deploy changes
-
-deploy-changesets: project.json functions/changesets/function.json
-	apex deploy changesets
-
-deploy-mirror: project.json functions/mirror/function.json
-	apex deploy mirror
-
-install: project.json
-
-project.json: project.json.hbs node_modules/.bin/interp
-	interp < $< > $@
-
 node_modules/.bin/interp:
 	npm install
 

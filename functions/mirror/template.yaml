@@ -1,0 +1,34 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  OSM mirroring/trancode-triggering Lambda function
+
+Transform:
+- AWS::Serverless-2016-10-31
+
+Resources:
+  function:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handle
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 60
+      Description: Start AWS Batch jobs to mirror OSM content.
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - AmazonS3FullAccess
+        - Statement:
+          - Effect: Allow
+            Action: batch:SubmitJob
+            Resource: "*"
+      Environment: 
+        Variables:
+          BATCH_JOB_QUEUE: default
+          S3_BUCKET: osm-pds
+      Events:
+        ScheduleEvent:
+          Type: ScheduleV2
+          Properties:
+            ScheduleExpression: "rate(15 minute)"
