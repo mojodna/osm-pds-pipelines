@@ -6,7 +6,7 @@ PATH := node_modules/.bin:$(PATH)
 input := $(shell mktemp -u)
 
 default:
-	docker build -t quay.io/mojodna/osm-pds-pipelines .
+	docker build --platform linux/amd64 -t quay.io/mojodna/osm-pds-pipelines .
 
 .PHONY: functions/%/function.json
 functions/%/function.json: functions/%/function.json.hbs
