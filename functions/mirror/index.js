@@ -147,7 +147,7 @@ exports.handle = (event, context, callback) => {
     local: done => {
       // TODO when this exceeds 1000 results, things get weird and we start mirroring things that
       // already exist
-      return s3.listObjects({
+      return s3.listObjectsV2({
         Bucket: S3_BUCKET,
       }, (err, data) => {
         if (err) {
