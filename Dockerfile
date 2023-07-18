@@ -9,7 +9,7 @@ RUN yum install -y aws-cli bsdtar findutils pv
 WORKDIR /app
 
 RUN \
-  curl -sfL https://github.com/mojodna/osm2orc/releases/download/v0.5.5/osm2orc-0.5.5.tar.gz | bsdtar zxf - --strip-components=1 && chmod +x bin/osm2orc
+  curl -sfL https://github.com/mojodna/osm2orc/releases/download/v0.6.1/osm2orc-0.6.1.zip | bsdtar zxf - --strip-components=1 && chmod +x bin/osm2orc
 
 COPY . /app
 
