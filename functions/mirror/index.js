@@ -232,7 +232,7 @@ exports.handle = (event, context, callback) => {
                   mirror,
                   `${HTTP_SOURCE_PREFIX}${info.path}`,
                   `s3://${S3_BUCKET}/${year}/${info.filename}`,
-                  `mirror-${basename}`,
+                  `mirror-${basename}-${extension.split('.').pop()}`,
                   null
                 )
               ];
