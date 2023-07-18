@@ -245,7 +245,6 @@ exports.handle = (event, context, callback) => {
                     `s3://${S3_BUCKET}/${year}/${info.filename}`,
                     `s3://${S3_BUCKET}/${type}-latest.${extension}`,
                     `place-${type}-latest`,
-                    null,
                   )
                 );
               }
