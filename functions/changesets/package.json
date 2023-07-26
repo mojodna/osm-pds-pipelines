@@ -5,7 +5,7 @@
   "author": "Seth Fitzsimmons <seth@mojodna.net>",
   "license": "ISC",
   "dependencies": {
-    "async": "^2.5.0",
+    "async": "^2.6.4",
     "aws-sdk": "^2.117.0",
     "babel-polyfill": "^6.26.0",
     "osm-replication-streams": "^0.1.1",
