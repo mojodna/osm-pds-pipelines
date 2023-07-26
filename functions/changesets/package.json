@@ -6,7 +6,7 @@
   "license": "ISC",
   "dependencies": {
     "async": "^2.5.0",
-    "aws-sdk": "^2.117.0",
+    "aws-sdk": "^2.814.0",
     "babel-polyfill": "^6.26.0",
     "osm-replication-streams": "^0.1.1",
     "osm2obj": "^2.2.2",
