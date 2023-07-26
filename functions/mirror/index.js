@@ -58,6 +58,9 @@ const mirror = (src, dst, jobName, dependsOn, callback) => {
   })
 }
 
+const isTranscodable = filename => 
+  filename.match(/^((planet|history)-\d{6}.osm.pbf|changesets-\d{6}.osm.bz2)$/);
+
 const transcode = (type, src, dst, jobName, dependsOn, callback) => {
   console.log(`Transcoding (${type}) ${src} to ${dst}...`)
   if (dependsOn != null) {
@@ -249,8 +252,8 @@ exports.handle = (event, context, callback) => {
                 );
               }
 
-              if (info.filename.endsWith('.pbf')) {
-                // only transcode PBFs
+              if (isTranscodable(info.filename)) {
+                // only transcode PBFs and changesets
                 jobs.push(
                   async.apply(
                     transcode,
@@ -268,7 +271,7 @@ exports.handle = (event, context, callback) => {
                 }
 
                 // compare date to the max date available to determine whether it needs to be placed
-                if (info.filename.endsWith('.pbf') && latestByType[type] === Number(date)) {
+                if (isTranscodable(info.filename) && latestByType[type] === Number(date)) {
                   return mirror(
                     `s3://${S3_BUCKET}/${year}/${basename}.orc`,
                     `s3://${S3_BUCKET}/${target}/${type}-latest.orc`,
