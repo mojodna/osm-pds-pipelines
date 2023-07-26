@@ -4,7 +4,7 @@ LABEL maintainer="Seth Fitzsimmons <seth@mojodna.net>"
 ENV DEBIAN_FRONTEND noninteractive
 ENV PATH /app/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
-RUN yum install -y aws-cli bsdtar findutils pv
+RUN yum install -y aws-cli bsdtar bzip2 findutils pv
 
 WORKDIR /app
 
