@@ -114,7 +114,7 @@ exports.handle = (event, context, callback) => {
               .source(`${RSYNC_SOURCE_PREFIX}${path}`);
 
             const env = process.env;
-            env.PATH += "/var/task/bin";
+            env.PATH += ":/var/task/bin";
 
             rsync.env(env);
 
